@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: network_sentinel_backend
+    ports:
+      - "8081:8000"
+    volumes:
+      - ./backend:/app
+      # prevent mounting node_modules or db state to local host if desired, 
+      # but standard persistent sqlite db is saved in volume
+      - sentinel_db:/app/data
+    environment:
+      - SECRET_KEY=prod-secret-network-sentinel-key-298347
+      - DATABASE_URL=sqlite:////app/data/network_sentinel.db
+    # cap sys_admin privileges or raw net capabilities if we wanted raw ping, 
+    # but we built TCP-ping and standard subprocess ping SUID binary fallbacks
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+
+  frontend:
+    build: ./frontend
+    container_name: network_sentinel_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  sentinel_db:

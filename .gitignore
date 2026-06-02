@@ -1,0 +1,21 @@
+# Python Virtual Environments
+backend/venv/
+backend/.venv/
+**/__pycache__/
+*.pyc
+
+# Node Modules & Builds
+frontend/node_modules/
+frontend/dist/
+
+# SQLite Database files
+backend/*.db
+*.db
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+**/logs/
